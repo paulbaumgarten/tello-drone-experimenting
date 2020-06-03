@@ -111,21 +111,44 @@ def demo():
                     forward_back = 0
             else: # No valid arucode found
                 cv2.rectangle(img, (0,0), (width, height), (0,0,255), 100) # Color us BGR
-            # Send to RC
-            print(f"tello: forward: {forward_back}, up: {up_down}, yaw: {rotate}")
-            tello.send_rc_control(
-                left_right_velocity=0,
-                forward_backward_velocity=forward_back,
-                up_down_velocity=up_down,
-                yaw_velocity=rotate
-            )
             # Preview the image on screen
             cv2.imshow("video", img)
             # Wait 30 milliseconds for a keyboard press
             k = cv2.waitKey(10) & 0xff
-            # If ESC key pressed, close out
+            # If ESC key pressed, close 
             if k == 27:
                 keep_going = False
+            elif k == ord('0'):
+                keep_going = False
+            elif k == ord('1'):
+                tello.takeoff()
+            elif k == ord('+'):
+                up_down = 50
+            elif k == ord('-'):
+                up_down = -50
+            elif k == ord('s'):
+                forward_back = 0
+            elif k == ord('a'):
+                rotate = -90
+            elif k == ord('d'):
+                rotate = 90
+            elif k == ord('w'):
+                forward_back = 100
+            elif k == ord('x'):
+                forward_back = -100
+            elif k == ord('q'):
+                left_right_velocity = -100
+            elif k == ord('e'):
+                left_right_velocity = 100
+            # Send to RC
+            print(f"tello: forward: {forward_back}, up: {up_down}, yaw: {rotate}")
+            tello.send_rc_control(
+                left_right_velocity=left_right_velocity,
+                forward_backward_velocity=forward_back,
+                up_down_velocity=up_down,
+                yaw_velocity=rotate
+            )
+
     print(f"Landing. Height: {tello.get_height()}, Battery: {tello.get_battery()}, Temp: {tello.get_temperature()}")
     tello.land()
     tello.end()
