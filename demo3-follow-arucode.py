@@ -44,11 +44,6 @@ def demo():
     # Setup for arucodes
     aruco_dict = aruco.Dictionary_get(aruco.DICT_4X4_1000)
     parameters = aruco.DetectorParameters_create()
-    # Confirm take off
-    confirm = input("To initiate take off type 'go' >> ")
-    if not confirm == "go":
-        print("Aborting!")
-        return()
     # Initialise
     tello = Tello()
     tello.connect()
@@ -62,9 +57,12 @@ def demo():
     k = cv2.waitKey(10) & 0xff
     # Take off
     print(f"Take off. Height: {tello.get_height()}, Battery: {tello.get_battery()}, Temp: {tello.get_temperature()}")
-    tello.takeoff()
     # Start the main loop
     keep_going = True
+    left_right_velocity = 0
+    forward_back = 0
+    up_down = 0
+    rotate = 0
     while keep_going:
         frame_read = tello.get_frame_read()
         if frame_read.grabbed:
@@ -122,12 +120,15 @@ def demo():
                 keep_going = False
             elif k == ord('1'):
                 tello.takeoff()
-            elif k == ord('+'):
+            elif k == ord('+') or k == ord('='):
                 up_down = 50
             elif k == ord('-'):
                 up_down = -50
             elif k == ord('s'):
                 forward_back = 0
+                left_right_velocity = 0
+                rotate = 0
+                up_down = 0
             elif k == ord('a'):
                 rotate = -90
             elif k == ord('d'):
@@ -150,8 +151,11 @@ def demo():
             )
 
     print(f"Landing. Height: {tello.get_height()}, Battery: {tello.get_battery()}, Temp: {tello.get_temperature()}")
-    tello.land()
-    tello.end()
+    try:
+        tello.land()
+        tello.end()
+    except:
+        print("Unable to land without error")
     print(f"Power off. Battery: {tello.get_battery()}, Temp: {tello.get_temperature()}")
     cv2.destroyAllWindows()
 
