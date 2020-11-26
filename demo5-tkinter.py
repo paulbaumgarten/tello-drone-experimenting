@@ -11,19 +11,19 @@ tello = Tello()
 
 def left(e):
     print("Left")
-    tello.send_rc_control(40, 0, 0, 0) # left, forward, up, rotate
+    tello.send_rc_control(-20, 0, 0, 0) # left, forward, up, rotate
 
 def right(e):
     print("Right")
-    tello.send_rc_control(-40, 0, 0, 0) # left, forward, up, rotate
+    tello.send_rc_control(20, 0, 0, 0) # left, forward, up, rotate
 
 def forward(e):
     print("Forward")
-    tello.send_rc_control(0, 40, 0, 0) # left, forward, up, rotate
+    tello.send_rc_control(0, 20, 0, 0) # left, forward, up, rotate
 
 def back(e):
     print("Back")
-    tello.send_rc_control(0, -40, 0, 0) # left, forward, up, rotate
+    tello.send_rc_control(0, -20, 0, 0) # left, forward, up, rotate
 
 def up(e):
     print("Up")
