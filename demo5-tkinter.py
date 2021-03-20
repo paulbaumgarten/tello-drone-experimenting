@@ -1,8 +1,5 @@
 from djitellopy import Tello
-import cv2
-# import pygame
 import tkinter
-import numpy as np
 import time
 import logging
 logging.basicConfig(filename='app.log', filemode='w', format='%(name)s - %(levelname)s - %(message)s')
@@ -46,15 +43,13 @@ def takeoff(e):
     print("Take off")
     tello.takeoff()
 
-def takeoff(e):
-    print("Take off")
-    tello.takeoff()
-
+# Start the program
+app = tkinter.Tk()
+app.title("My drone!")
 print("Connecting")
 tello.connect()
 time.sleep(1)
-app = tkinter.Tk()
-app.title("My drone!")
+# Attach the keypresses to the functions above
 app.bind("<Left>", left)
 app.bind("<Right>", right)
 app.bind("<Up>", forward)
@@ -65,4 +60,5 @@ app.bind("<space>", allstop)
 app.bind("<t>", takeoff)
 app.bind("<w>", up)
 app.bind("<s>", down)
+# Run the program
 app.mainloop()
