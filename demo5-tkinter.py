@@ -1,38 +1,49 @@
 from djitellopy import Tello
-import tkinter
-import time
-import logging
-logging.basicConfig(filename='app.log', filemode='w', format='%(name)s - %(levelname)s - %(message)s')
+import tkinter, time, winsound
+
+def warning():
+    for n in range(4): # 4 short beeps
+        winsound.Beep(1500, 500)
+        time.sleep(0.5)
+    winsound.Beep(1500, 1000) # 1 long beep
 
 tello = Tello()
 
 def left(e):
     print("Left")
-    tello.send_rc_control(-20, 0, 0, 0) # left, forward, up, rotate
+    tello.send_rc_control(-30, 0, 0, 0)
 
 def right(e):
     print("Right")
-    tello.send_rc_control(20, 0, 0, 0) # left, forward, up, rotate
+    tello.send_rc_control(30, 0, 0, 0)
 
 def forward(e):
     print("Forward")
-    tello.send_rc_control(0, 20, 0, 0) # left, forward, up, rotate
+    tello.send_rc_control(0, 30, 0, 0)
+
+def anticlockwise(e):
+    print("Anticlockwise")
+    tello.send_rc_control(0, 0, 0, -30)
+
+def clockwise(e):
+    print("Clockwise")
+    tello.send_rc_control(0, 0, 0, 30)
 
 def back(e):
     print("Back")
-    tello.send_rc_control(0, -20, 0, 0) # left, forward, up, rotate
+    tello.send_rc_control(0, -30, 0, 0)
 
 def up(e):
     print("Up")
-    tello.send_rc_control(0, 0, 30, 0) # left, forward, up, rotate
+    tello.send_rc_control(0, 0, 20, 0)
 
 def down(e):
     print("Down")
-    tello.send_rc_control(0, 0, -30, 0) # left, forward, up, rotate
+    tello.send_rc_control(0, 0, -20, 0)
 
 def allstop(e):
     print("All stop")
-    tello.send_rc_control(0, 0, 0, 0) # left, forward, up, rotate
+    tello.send_rc_control(0, 0, 0, 0)
 
 def land(e):
     print("Land")
@@ -41,6 +52,7 @@ def land(e):
 
 def takeoff(e):
     print("Take off")
+    warning()
     tello.takeoff()
 
 # Start the program
@@ -48,7 +60,6 @@ app = tkinter.Tk()
 app.title("My drone!")
 print("Connecting")
 tello.connect()
-time.sleep(1)
 # Attach the keypresses to the functions above
 app.bind("<Left>", left)
 app.bind("<Right>", right)
@@ -60,5 +71,7 @@ app.bind("<space>", allstop)
 app.bind("<t>", takeoff)
 app.bind("<w>", up)
 app.bind("<s>", down)
+app.bind("<a>", clockwise)
+app.bind("<d>", anticlockwise)
 # Run the program
 app.mainloop()
