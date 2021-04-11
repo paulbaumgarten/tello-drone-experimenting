@@ -125,3 +125,4 @@ dmypy.json
 .pyre/
 .vscode/settings.json
 .DS_Store
+DJITelloPy-master/djitellopy/__init__.py
